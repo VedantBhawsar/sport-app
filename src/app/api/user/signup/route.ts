@@ -7,7 +7,7 @@ type ResponseData = {
   message: string;
 };
 
-export async function POST(request: NextApiRequest, response: NextApiResponse) {
+export async function POST(request: any, response: any) {
   await connectDatabase();
 
   try {
