@@ -1,95 +1,103 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-
+import {
+  AppBar,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Container,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 export default function Home() {
+  const [sport, setSport] = useState("");
+  const router = useRouter();
+  const handleChange = (event: SelectChangeEvent) => {
+    setSport(event.target.value);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <Stack
+      sx={{
+        height: "93%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "white",
+        color: "primary.contrastText",
+        padding: "1rem",
+        gap: "20px",
+        overflowY: "scroll",
+      }}
+    >
+      <Typography variant="h4" color={"black"}>
+        Sport App
+      </Typography>
+      <Select
+        value={sport}
+        label="Sport"
+        onChange={handleChange}
+        variant="outlined"
+        sx={{}}
+      >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        <MenuItem value={10}>Football</MenuItem>
+        <MenuItem value={20}>Boxing</MenuItem>
+        <MenuItem value={30}>Cricket</MenuItem>
+      </Select>
+      <Button
+        variant="contained"
+        sx={{
+          maxWidth: "fit-content",
+        }}
+      >
+        Search
+      </Button>
+      <Typography variant="button" color={"black"}>
+        Results
+      </Typography>
+      <Stack gap={2}>
+        {Array(10)
+          .fill("")
+          .map((_, index) => {
+            return (
+              <Card key={index} sx={{ minWidth: 275 }} variant="outlined">
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    Football
+                  </Typography>
+                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    all day
+                  </Typography>
+                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    11:00 - 12:30 PM
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="large"
+                    variant="text"
+                    sx={{
+                      borderRadius: 50,
+                    }}
+                    onClick={() => {
+                      router.push("/sport/1");
+                    }}
+                  >
+                    Go to
+                  </Button>
+                </CardActions>
+              </Card>
+            );
+          })}
+      </Stack>
+    </Stack>
   );
 }
