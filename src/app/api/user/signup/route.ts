@@ -2,38 +2,39 @@ import { connectDatabase } from "@/server/config/mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 const userSchema = require("@/server/models/users");
 import { NextResponse } from "next/server";
-
-type ResponseData = {
-  message: string;
-};
+import bcrypt from "bcrypt";
 
 export async function POST(request: any, response: any) {
   await connectDatabase();
-
+  const { name, email, password } = await request.json();
   try {
-    if (request.body) {
+    if (!request.body) {
       return NextResponse.json({
         message: "Request body is empty",
-        body: request.body,
       });
     }
-    const { name, email, password } = request.body;
-    const user = request.body;
-    console.log(name);
-    if (!user.name || !user.email || !user.password) {
+    if (!name || !email || !password) {
       return NextResponse.json(
         { message: "name, email and password are required" },
         { status: 400 }
       );
     }
-    const existedUser = await userSchema.findOne({ email: user.email });
+    const existedUser = await userSchema.findOne({ email: email });
     if (existedUser) {
       return NextResponse.json(
         { message: "user already found", user: existedUser },
         { status: 200 }
       );
     }
-    const newUser = new userSchema(user);
+
+    const saltRounds = await bcrypt.genSalt(5);
+
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const newUser = new userSchema({
+      name,
+      email,
+      password: hashedPassword,
+    });
     await newUser.save();
 
     return NextResponse.json(

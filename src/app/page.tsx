@@ -13,15 +13,17 @@ import {
   Typography,
 } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import { UserContext } from "@/context/userContext";
 export default function Home() {
   const [sport, setSport] = useState("");
   const router = useRouter();
   const handleChange = (event: SelectChangeEvent) => {
     setSport(event.target.value);
   };
-
+  const user = useContext(UserContext);
+  console.log(user);
   return (
     <Stack
       sx={{

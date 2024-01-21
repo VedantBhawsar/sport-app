@@ -1,4 +1,5 @@
 "use client";
+import { UserContext } from "@/context/userContext";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
@@ -12,15 +13,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Router } from "next/router";
+import React, { useContext, useState } from "react";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { user, signIn } = useContext(UserContext);
   const [newUser, setNewUser] = useState({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = React.useState(false);
-  console.log(newUser);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -28,10 +32,19 @@ export default function LoginPage() {
   ) => {
     event.preventDefault();
   };
+
+  async function handleLogin() {
+    signIn(newUser.email, newUser.password);
+    if (user) {
+      router.push("/");
+      localStorage.setItem("user", res.data);
+    }
+  }
+
   return (
     <Stack
       sx={{
-        height: "93%",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         backgroundColor: "white",
@@ -87,6 +100,7 @@ export default function LoginPage() {
             py: 1.5,
             maxWidth: "fit-content",
           }}
+          onClick={handleLogin}
         >
           Login
         </Button>

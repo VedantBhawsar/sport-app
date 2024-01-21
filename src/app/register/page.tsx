@@ -21,7 +21,6 @@ export default function RegisterPage() {
     password: "",
   });
   const [showPassword, setShowPassword] = React.useState(false);
-  console.log(newUser);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -32,7 +31,7 @@ export default function RegisterPage() {
   return (
     <Stack
       sx={{
-        height: "93%",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         backgroundColor: "white",
